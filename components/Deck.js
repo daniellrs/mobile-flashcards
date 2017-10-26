@@ -5,10 +5,10 @@ import { white } from '../utils/colors';
 export default class Deck extends Component {
 
   render() {
-    const { title, cards } = this.props;
+    const { title, cards, onPress } = this.props;
 
     return (
-      <TouchableOpacity activeOpacity={0.7} style={styles.deck}>
+      <TouchableOpacity activeOpacity={0.7} onPress={onPress} style={styles.deck}>
         <Image style={styles.backgroundDeck} source={require('../img/fundo.png')}>
           <Text style={styles.deckName}>{title}</Text>
           <Text style={styles.deckCads}>{cards} cards</Text>

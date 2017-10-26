@@ -2,17 +2,17 @@ import React, {Component} from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import Button from '../../components/Button';
 import ButtonImage from '../../components/ButtonImage';
-import { white, pink } from '../../utils/colors';
+import { white, pink, red } from '../../utils/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default class IndividualDeck extends Component {
-
   render() {
+    console.log(this.props.navigation.state.params);
     return (
-        <View style={styles.container}>
-          <Image style={styles.backgroundCard} source={require('../../img/fundoDetalhesCartaoComEf2.png')}>
+        <Image style={styles.container} source={require('../../img/fundo.png')}>
+          <Image style={styles.backgroundCard} source={require('../../img/fundoDetalhesCartaoComEf.png')}>
             <Text style={styles.titleCard}>Eai, de boa?</Text>
-            <Text style={{color: white, fontSize: 16}}>15 cards</Text>
+            <Text style={{fontSize: 16}}>15 cards</Text>
           </Image>
           <View style={styles.buttonsView}>
 
@@ -25,7 +25,7 @@ export default class IndividualDeck extends Component {
             </Button>
 
           </View>
-        </View>
+        </Image>
     )
   }
 }
@@ -33,7 +33,9 @@ export default class IndividualDeck extends Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: 'stretch'
+    alignItems: 'stretch',
+    width: '100%',
+    height: '100%'
   },
   backgroundCard: {
     flex: 1,
@@ -43,7 +45,6 @@ const styles = StyleSheet.create({
     height: '100%'
   },
   titleCard: {
-    color: white,
     fontSize: 22,
     marginBottom: 5
   },

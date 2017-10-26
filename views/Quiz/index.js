@@ -12,7 +12,7 @@ export default class Deck extends Component {
     return (
         <View style={styles.container}>
 
-          <Image style={styles.backgroundCard} source={require('../../img/fundoDetalhesCartaoComEf3.png')}>
+          <Image style={styles.backgroundCard} source={require('../../img/fundoDetalhesCartaoComEf.png')}>
 
             <View style={{flex: 2}} />
 
