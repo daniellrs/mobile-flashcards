@@ -1,5 +1,5 @@
 import React, {Component} from 'react';
-import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet } from 'react-native';
+import { View, Text, Image, TouchableOpacity, StatusBar, StyleSheet, Button } from 'react-native';
 import DeckList from './DeckList';
 import IndividualDeck from './IndividualDeck';
 import Quiz from './Quiz';
@@ -19,12 +19,22 @@ const stackDefaults = {
   }
 }
 
-const homeButton = (navigation) => {
+const NewButton = (navigation) => {
+  return (
+    <TouchableOpacity title='New' onPress={() => navigation.navigate('NewDeck')} style={styles.newButton}>
+      <Text style={styles.newButtonText}>New</Text>
+    </TouchableOpacity>
+  )
+}
+
+const HomeButton = (navigation) => {
 
   return {
     header: () =>
     <View style={styles.homeView}>
-      <Entypo name='home' onPress={() => navigation.goBack()} style={styles.homeButton} />
+      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.homeButton}>
+        <Entypo name='home' style={styles.homeGlyph} />
+      </TouchableOpacity>
     </View>
   }
 }
@@ -32,23 +42,38 @@ const homeButton = (navigation) => {
 const Stack = StackNavigator({
   DeckList: {
     screen: DeckList,
-    navigationOptions: {
+    navigationOptions: ({navigation}) => ({
       title: 'Decks',
-      ...stackDefaults
-    }
+      headerRight: NewButton(navigation),
+      ...stackDefaults,
+    })
   },
   IndividualDeck: {
     screen: IndividualDeck,
     navigationOptions: ({navigation}) => ({
-      ...homeButton(navigation),
+      ...HomeButton(navigation),
       ...stackDefaults
     })
   },
   NewDeck: {
     screen: NewDeck,
+    navigationOptions: ({navigation}) => ({
+      ...HomeButton(navigation),
+      ...stackDefaults
+    })
+  },
+  NewQuestion: {
+    screen: NewQuestion,
     navigationOptions: {
       ...stackDefaults
     }
+  },
+  Quiz: {
+    screen: Quiz,
+    navigationOptions: ({navigation}) => ({
+      ...HomeButton(navigation),
+      ...stackDefaults
+    })
   }
 });
 
@@ -98,13 +123,29 @@ const styles = StyleSheet.create({
     padding: 3
   },
   homeButton: {
-    color: red,
-    fontSize: 20,
-    marginLeft: 12,
-    padding: 5,
-    backgroundColor: blackShadow,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: 33,
+    height: 33,
     borderRadius: 50,
     borderWidth: 1,
-    borderColor: lightRed
+    backgroundColor: white,
+    borderColor: lightRed,
+    marginLeft: 12
+  },
+  homeGlyph: {
+    color: red,
+    fontSize: 20
+  },
+  newButton: {
+    marginRight: 17,
+    backgroundColor: red,
+    justifyContent: 'center',
+    alignItems: 'center',
+    padding: 8,
+    borderRadius: 4
+  },
+  newButtonText: {
+    color: white
   }
 });

@@ -14,29 +14,37 @@ export default class NewQuestion extends Component {
     const { question, answer } = this.state;
 
     return (
-      <KeyboardAvoidingView style={styles.container}>
-        <View style={styles.textView}>
-          <Text style={styles.text}>New card</Text>
-        </View>
+      <Image style={styles.container} source={require('../../img/fundo.png')}>
+        <KeyboardAvoidingView style={styles.viewAvoid}>
+          <View style={styles.textView}>
+            <Text style={styles.text}>New card</Text>
+          </View>
 
-        <View style={styles.inputView}>
-          <Input value={question} placeholder="Question" underlineColorAndroid="#fff" placeholderTextColor="#fff"
-            autoCapitalize="sentences" onChangeText={(text) => this.setState({title: text})}
-            name='question' size={25} color='#fff' />
+          <View style={styles.inputView}>
+            <Input value={question} placeholder="Question" underlineColorAndroid="#fff" placeholderTextColor="#fff"
+              autoCapitalize="sentences" onChangeText={(text) => this.setState({title: text})}
+              name='question' size={25} color='#fff' />
 
-          <Input value={answer} placeholder="Answer" underlineColorAndroid="#fff" placeholderTextColor="#fff"
-            autoCapitalize="sentences" onChangeText={(text) => this.setState({title: text})}
-            name='lock' size={25} color='#fff' />
+            <Input value={answer} placeholder="Answer" underlineColorAndroid="#fff" placeholderTextColor="#fff"
+              autoCapitalize="sentences" onChangeText={(text) => this.setState({title: text})}
+              name='lock' size={25} color='#fff' />
 
-          <Button value='Submit' />
-        </View>
-      </KeyboardAvoidingView>
+            <Button value='Submit' />
+          </View>
+        </KeyboardAvoidingView>
+      </Image>
     )
   }
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    alignItems: 'stretch',
+    width: '100%',
+    height: '100%'
+  },
+  viewAvoid: {
     flex: 1,
     padding: 30
   },

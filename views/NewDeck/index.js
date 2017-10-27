@@ -13,25 +13,33 @@ export default class NewDeck extends Component {
     const { title } = this.state;
 
     return (
-      <KeyboardAvoidingView style={styles.container}>
-        <View style={styles.textView}>
-          <Text style={styles.text}>What is the title of your new deck?</Text>
-        </View>
+      <Image style={styles.container} source={require('../../img/fundo.png')}>
+        <KeyboardAvoidingView style={styles.viewAvoid}>
+          <View style={styles.textView}>
+            <Text style={styles.text}>What is the title of your new deck?</Text>
+          </View>
 
-        <View style={styles.inputView}>
-          <Input value={title} placeholder="Title" underlineColorAndroid="#fff" placeholderTextColor="#fff"
-            autoCapitalize="sentences" onChangeText={(text) => this.setState({title: text})}
-            name='puzzle-piece' size={25} color='#fff' />
+          <View style={styles.inputView}>
+            <Input value={title} placeholder="Title" underlineColorAndroid="#fff" placeholderTextColor="#fff"
+              autoCapitalize="sentences" onChangeText={(text) => this.setState({title: text})}
+              name='puzzle-piece' size={25} color='#fff' />
 
-          <Button value='Create' />
-        </View>
-      </KeyboardAvoidingView>
+            <Button value='Create' />
+          </View>
+        </KeyboardAvoidingView>
+      </Image>
     )
   }
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    alignItems: 'stretch',
+    width: '100%',
+    height: '100%'
+  },
+  viewAvoid: {
     flex: 1,
     padding: 30
   },

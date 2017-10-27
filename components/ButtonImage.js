@@ -5,10 +5,10 @@ import { white, pink } from '../utils/colors';
 export default class ButtonImage extends Component {
 
   render() {
-    const { value, children } = this.props;
+    const { value, children, onPress } = this.props;
 
     return (
-      <TouchableOpacity activeOpacity={0.7} style={styles.button}>
+      <TouchableOpacity activeOpacity={0.7} onPress={onPress} style={styles.button}>
         <Image style={styles.backgroundButtonImage} source={require('../img/fundo.png')}>
           {children}
           <Text style={styles.textButton}>{value}</Text>

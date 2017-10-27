@@ -10,7 +10,8 @@ export default class Deck extends Component {
   render() {
 
     return (
-        <View style={styles.container}>
+      <Image style={styles.container} source={require('../../img/fundo.png')}>
+        <View style={styles.View}>
 
           <Image style={styles.backgroundCard} source={require('../../img/fundoDetalhesCartaoComEf.png')}>
 
@@ -43,12 +44,19 @@ export default class Deck extends Component {
 
           </View>
         </View>
+      </Image>
     )
   }
 }
 
 const styles = StyleSheet.create({
   container: {
+    flex: 1,
+    alignItems: 'stretch',
+    width: '100%',
+    height: '100%'
+  },
+  View: {
     flex: 1,
     alignItems: 'stretch'
   },

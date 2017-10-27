@@ -6,6 +6,11 @@ import { white, pink, red } from '../../utils/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default class IndividualDeck extends Component {
+
+  navigate = (screen) => {
+    this.props.navigation.navigate(screen);
+  }
+
   render() {
     console.log(this.props.navigation.state.params);
     return (
@@ -16,11 +21,11 @@ export default class IndividualDeck extends Component {
           </Image>
           <View style={styles.buttonsView}>
 
-            <ButtonImage value="Start Quiz">
+            <ButtonImage value="Start Quiz" onPress={() => this.navigate('Quiz')}>
               <MaterialCommunityIcons name='cards' size={30} color={white} style={{marginRight: 5}} />
             </ButtonImage>
 
-            <Button value="AddCard">
+            <Button value="AddCard" onPress={() => this.navigate('NewQuestion')}>
               <MaterialCommunityIcons name='plus' color={pink} size={30} style={{marginRight: 5}} />
             </Button>
 
