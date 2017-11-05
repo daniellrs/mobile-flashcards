@@ -1,16 +1,14 @@
 {
   "expo": {
    "name": "FP",
-   "icon": "https://maxcdn.icons8.com/Color/PNG/512/Sports/triathlon-512.png",
    "version": "1.0.0",
    "slug": "f-p",
-   "sdkVersion": "21.0.0",
+   "sdkVersion": "22.0.0",
    "ios": {
      "bundleIdentifier": "com.yourcompany.fp"
    },
    "android": {
      "package": "com.yourcompany.fp"
-   },
-    "loading":{ "icon": "https://maxcdn.icons8.com/Color/PNG/512/Sports/triathlon-512.png"}
+   }
   }
 }

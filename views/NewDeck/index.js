@@ -3,10 +3,23 @@ import { View, KeyboardAvoidingView, Text, Image, StyleSheet } from 'react-nativ
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import { white } from '../../utils/colors';
+import { saveDeckTitle, getDeck } from '../../utils/asyncStorage';
 
 export default class NewDeck extends Component {
   state = {
     title: ''
+  }
+
+  async createDeck( title ) {
+
+    if( title.trim().length < 1 ) {
+
+      const exist = await getDeck( title );
+
+      if( !exist ) {
+        saveDeckTitle( title );
+      }
+    }
   }
 
   render() {
@@ -24,7 +37,7 @@ export default class NewDeck extends Component {
               autoCapitalize="sentences" onChangeText={(text) => this.setState({title: text})}
               name='puzzle-piece' size={25} color='#fff' />
 
-            <Button value='Create' />
+            <Button value='Create' onPress={() => this.createDeck( title )} />
           </View>
         </KeyboardAvoidingView>
       </Image>

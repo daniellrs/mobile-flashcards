@@ -4,20 +4,40 @@ import Button from '../../components/Button';
 import ButtonImage from '../../components/ButtonImage';
 import { white, pink, red } from '../../utils/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { getDeck } from '../../utils/asyncStorage';
 
 export default class IndividualDeck extends Component {
+  state = {
+    deck: {}
+  }
+
+  componentDidMount() {
+    const key = this.props.navigation.state.params.key;
+
+    getDeck( key ).then( deck => this.setState({deck}));
+  }
 
   navigate = (screen) => {
     this.props.navigation.navigate(screen);
   }
 
+  countCards = ( deck ) => {
+
+    if( !deck.questions ) {
+      return 0;
+    }
+
+    return deck.questions.length;
+  }
+
   render() {
-    console.log(this.props.navigation.state.params);
+    const { deck } = this.state;
+
     return (
         <Image style={styles.container} source={require('../../img/fundo.png')}>
           <Image style={styles.backgroundCard} source={require('../../img/fundoDetalhesCartaoComEf.png')}>
-            <Text style={styles.titleCard}>Eai, de boa?</Text>
-            <Text style={{fontSize: 16}}>15 cards</Text>
+            <Text style={styles.titleCard}>{deck.title}</Text>
+            <Text style={{fontSize: 16}}>{this.countCards( deck )} cards</Text>
           </Image>
           <View style={styles.buttonsView}>
 
