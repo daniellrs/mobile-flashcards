@@ -52,7 +52,7 @@ export default class NewDeck extends Component {
           <Alert type='white' value={alert} />
         )}
 
-        <KeyboardAvoidingView style={styles.viewAvoid}>
+        <KeyboardAvoidingView behavior='padding' style={styles.viewAvoid}>
           <View style={styles.textView}>
             <Text style={styles.text}>What is the title of your new deck?</Text>
           </View>

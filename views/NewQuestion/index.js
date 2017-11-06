@@ -57,7 +57,7 @@ export default class NewQuestion extends Component {
           <Alert type='white' value={alert} />
         )}
 
-        <KeyboardAvoidingView style={styles.viewAvoid}>
+        <KeyboardAvoidingView behavior='padding' style={styles.viewAvoid}>
           <View style={styles.textView}>
             <Text style={styles.text}>New card</Text>
           </View>
