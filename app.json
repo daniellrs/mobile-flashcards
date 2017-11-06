@@ -1,14 +1,16 @@
 {
   "expo": {
-   "name": "FP",
-   "version": "1.0.0",
-   "slug": "f-p",
-   "sdkVersion": "22.0.0",
-   "ios": {
-     "bundleIdentifier": "com.yourcompany.fp"
-   },
-   "android": {
-     "package": "com.yourcompany.fp"
-   }
-  }
+    "sdkVersion": "19.0.0",
+    "orientation": "portrait",
+    "name": "MobileFlashCards",
+    "description": "The best app to study in the world.",
+    "slug": "MobileFlashCards",
+    "version": "1.0",
+    "ios": {
+     "bundleIdentifier": "org.mobileflashcards.exp",
+    },
+    "android": {
+     "package": "org.mobileflashcards.exp",
+    }
+  },
 }
