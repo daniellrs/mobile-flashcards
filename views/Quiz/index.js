@@ -122,7 +122,7 @@ export default class Deck extends Component {
               <ButtonImage value="Restart Quiz" buttonStyle={{flex: 1}} onPress={this.restartQuiz}>
                 <MaterialCommunityIcons name='cards' size={30} color={white} style={{marginRight: 5}} />
               </ButtonImage>
-
+              
               <Button value="Back to Deck" buttonStyle={{flex: 1}} onPress={() => this.navigate('IndividualDeck', deck.title)}>
                 <MaterialCommunityIcons name='plus' color={pink} size={30} style={{marginRight: 5}} />
               </Button>

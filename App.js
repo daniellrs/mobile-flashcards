@@ -2,6 +2,7 @@ import React, {Component} from 'react';
 import { View } from 'react-native';
 import Views from './views';
 import { Font } from 'expo';
+import { setLocalNotification } from './utils/localNotification';
 
 export default class App extends Component {
   state = {
@@ -9,6 +10,9 @@ export default class App extends Component {
   }
 
   async componentDidMount() {
+
+    setLocalNotification( );
+
     await Font.loadAsync({
       'gotham-rounded-light': require('./assets/fonts/gotham-rounded-light.otf')
     });

@@ -6,6 +6,7 @@ import Alert from '../../components/Alert';
 import { white, pink, red } from '../../utils/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { getDeck } from '../../utils/asyncStorage';
+import { clearLocalNotification, setLocalNotification } from '../../utils/localNotification';
 
 export default class IndividualDeck extends Component {
   state = {
@@ -39,6 +40,8 @@ export default class IndividualDeck extends Component {
   startDeck = ( deck ) => {
     if( this.countCards( deck ) > 0 ) {
       this.navigate('Quiz', deck.title);
+
+      clearLocalNotification( ).then( setLocalNotification );
     } else {
       this.setAlert('The deck needs at least 1 card');
     }
