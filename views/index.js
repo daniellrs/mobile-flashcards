@@ -13,7 +13,7 @@ import { Entypo } from '@expo/vector-icons';
 const stackDefaults = {
   headerTintColor: red,
   headerStyle: {
-    backgroundColor: grey,
+    backgroundColor: white,
     borderBottomWidth: 1,
     borderBottomColor: red
   }
@@ -116,7 +116,8 @@ const styles = StyleSheet.create({
     backgroundColor: 'transparent',
     borderBottomWidth: 1,
     borderBottomColor: red,
-    padding: 3
+    padding: 3,
+    backgroundColor: white
   },
   homeButton: {
     justifyContent: 'center',
