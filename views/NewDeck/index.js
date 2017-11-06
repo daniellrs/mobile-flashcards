@@ -10,20 +10,22 @@ export default class NewDeck extends Component {
     title: ''
   }
 
-  async createDeck( title ) {
+  async createDeck( title, navigation ) {
 
-    if( title.trim().length < 1 ) {
+    if( title.trim().length > 0 ) {
 
       const exist = await getDeck( title );
-
+      
       if( !exist ) {
-        saveDeckTitle( title );
+        await saveDeckTitle( title );
+        navigation.navigate('IndividualDeck', { title });
       }
     }
   }
 
   render() {
     const { title } = this.state;
+    const { navigation } = this.props;
 
     return (
       <Image style={styles.container} source={require('../../img/fundo.png')}>
@@ -37,7 +39,7 @@ export default class NewDeck extends Component {
               autoCapitalize="sentences" onChangeText={(text) => this.setState({title: text})}
               name='puzzle-piece' size={25} color='#fff' />
 
-            <Button value='Create' onPress={() => this.createDeck( title )} />
+            <Button value='Create' onPress={() => this.createDeck( title, navigation )} />
           </View>
         </KeyboardAvoidingView>
       </Image>

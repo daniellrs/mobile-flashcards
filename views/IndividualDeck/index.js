@@ -12,13 +12,13 @@ export default class IndividualDeck extends Component {
   }
 
   componentDidMount() {
-    const key = this.props.navigation.state.params.key;
+    const title = this.props.navigation.state.params.title;
 
-    getDeck( key ).then( deck => this.setState({deck}));
+    getDeck( title ).then( deck => this.setState({deck}));
   }
 
-  navigate = (screen) => {
-    this.props.navigation.navigate(screen);
+  navigate = ( screen, title ) => {
+    this.props.navigation.navigate(screen, { title });
   }
 
   countCards = ( deck ) => {
@@ -41,11 +41,11 @@ export default class IndividualDeck extends Component {
           </Image>
           <View style={styles.buttonsView}>
 
-            <ButtonImage value="Start Quiz" onPress={() => this.navigate('Quiz')}>
+            <ButtonImage value="Start Quiz" onPress={() => this.navigate('Quiz', deck.title)}>
               <MaterialCommunityIcons name='cards' size={30} color={white} style={{marginRight: 5}} />
             </ButtonImage>
 
-            <Button value="AddCard" onPress={() => this.navigate('NewQuestion')}>
+            <Button value="AddCard" onPress={() => this.navigate('NewQuestion', deck.title)}>
               <MaterialCommunityIcons name='plus' color={pink} size={30} style={{marginRight: 5}} />
             </Button>
 

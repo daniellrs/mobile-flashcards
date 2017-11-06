@@ -4,46 +4,94 @@ import Button from '../../components/Button';
 import ButtonImage from '../../components/ButtonImage';
 import Card from '../../components/Card';
 import { white, pink, yellow } from '../../utils/colors';
+import { getDeck } from '../../utils/asyncStorage';
 
 export default class Deck extends Component {
+  state = {
+    deck: null,
+    questionsLength: 0,
+    indexQuestion: 1,
+    wrongAnswers: [],
+    finished: false
+  }
+
+  componentDidMount() {
+    const title = this.props.navigation.state.params.title;
+    getDeck( title ).then( deck => this.setState({deck, questionsLength: deck.questions.length}));
+  }
+
+  checkActualQuestion = () => {
+    const { deck, indexQuestion } = this.state;
+
+    if(!deck) {
+      return {}
+    }
+
+    return deck.questions[indexQuestion-1];
+  }
+
+  handleAnswer = ( answer ) => {
+    const { deck, indexQuestion, wrongAnswers, questionsLength } = this.state;
+
+    const currentQuestion = deck.questions[indexQuestion-1];
+
+    if( answer !== currentQuestion.answer ) {
+      wrongAnswers.push( indexQuestion );
+    }
+
+    if( questionsLength !== indexQuestion ) {
+      this.setState({indexQuestion: indexQuestion+1});
+    } else {
+      this.setState({finished: true});
+    }
+
+  }
 
   render() {
+    const { questionsLength, indexQuestion, finished, wrongAnswers } = this.state;
+
+    const currentQuestion = this.checkActualQuestion();
 
     return (
       <Image style={styles.container} source={require('../../img/fundo.png')}>
-        <View style={styles.View}>
+        {finished && (
+          <Text>{JSON.stringify(wrongAnswers)}</Text>
+        )}
+        {!finished && (
+          <View style={styles.View}>
 
-          <Image style={styles.backgroundCard} source={require('../../img/fundoDetalhesCartaoComEf.png')}>
+            <Image style={styles.backgroundCard} source={require('../../img/fundoDetalhesCartaoComEf.png')}>
 
-            <View style={{flex: 2}} />
+              <View style={{flex: 2}} />
 
-            <Card>
-              <View style={styles.viewCard}>
-                <Text style={styles.cardInfo}>Question</Text>
-                <Text style={{fontSize: 17}}>Front</Text>
+              <Card>
+                <View style={styles.viewCard}>
+                  <Text style={styles.cardInfo}>Question</Text>
+                  <Text style={{fontSize: 17}}>{currentQuestion.question}</Text>
+                </View>
+                <View style={styles.viewCard}>
+                  <Text style={styles.cardInfo}>Answer</Text>
+                  <Text style={{fontSize: 17}}>{currentQuestion.answer === 1 ? 'Correct' : 'Incorrect'}</Text>
+                </View>
+              </Card>
+
+              <View style={{flex: 2}} />
+
+              <View style={styles.progressView}>
+                <Text style={[styles.progress, {fontSize: 22, fontWeight: 'bold'}]}>{indexQuestion}</Text>
+                <Text style={[styles.progress, {fontSize: 12, top: 3}]}>/{questionsLength}</Text>
               </View>
-              <View style={styles.viewCard}>
-                <Text style={styles.cardInfo}>Answer</Text>
-                <Text style={{fontSize: 17}}>Back</Text>
-              </View>
-            </Card>
 
-            <View style={{flex: 2}} />
+            </Image>
+            <View style={styles.buttonsView}>
 
-            <View style={styles.progressView}>
-              <Text style={[styles.progress, {fontSize: 22, fontWeight: 'bold'}]}>1</Text>
-              <Text style={[styles.progress, {fontSize: 12, top: 3}]}>/15</Text>
+              <ButtonImage value='Correct' onPress={() => this.handleAnswer(1)} />
+
+              <Button value='Incorrect' onPress={() => this.handleAnswer(0)} />
+
             </View>
-
-          </Image>
-          <View style={styles.buttonsView}>
-
-            <ButtonImage value='Correct' />
-
-            <Button value='Incorrect' />
-
           </View>
-        </View>
+        )}
       </Image>
     )
   }

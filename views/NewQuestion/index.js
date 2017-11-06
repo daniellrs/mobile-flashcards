@@ -2,12 +2,32 @@ import React, { Component } from 'react';
 import { View, KeyboardAvoidingView, Text, Image, StyleSheet } from 'react-native';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
+import ButtonImage from '../../components/ButtonImage';
 import { white } from '../../utils/colors';
+import { addCardToDeck } from '../../utils/asyncStorage';
 
 export default class NewQuestion extends Component {
   state = {
+    title: '',
     question: '',
-    answer: ''
+    answer: 1
+  }
+
+  componentDidMount() {
+    const title = this.props.navigation.state.params.title;
+    this.setState({title});
+  }
+
+  addCard = () => {
+    const { title, question, answer } = this.state;
+    const { navigation } = this.props;
+
+    if( title.trim().length > 0 ) {
+
+      addCardToDeck(title, {question, answer}).then(() => {
+        navigation.navigate('IndividualDeck', { title });
+      });
+    }
   }
 
   render() {
@@ -22,14 +42,24 @@ export default class NewQuestion extends Component {
 
           <View style={styles.inputView}>
             <Input value={question} placeholder="Question" underlineColorAndroid="#fff" placeholderTextColor="#fff"
-              autoCapitalize="sentences" onChangeText={(text) => this.setState({title: text})}
+              autoCapitalize="sentences" onChangeText={(text) => this.setState({question: text})}
               name='question' size={25} color='#fff' />
 
-            <Input value={answer} placeholder="Answer" underlineColorAndroid="#fff" placeholderTextColor="#fff"
-              autoCapitalize="sentences" onChangeText={(text) => this.setState({title: text})}
-              name='lock' size={25} color='#fff' />
+            {answer === 1 && (
+              <View style={styles.answerView}>
+                <ButtonImage value='Correct' buttonStyle={{flex: 1}} />
+                <Button onPress={() => this.setState({answer: 0})} value='Incorrect' buttonStyle={{flex: 1}} />
+              </View>
+            )}
 
-            <Button value='Submit' />
+            {answer === 0 && (
+              <View style={styles.answerView}>
+                <Button onPress={() => this.setState({answer: 1})} value='Correct' buttonStyle={{flex: 1}} />
+                <ButtonImage value='Incorrect' buttonStyle={{flex: 1}} />
+              </View>
+            )}
+
+            <Button value='Submit' onPress={this.addCard} />
           </View>
         </KeyboardAvoidingView>
       </Image>
@@ -63,5 +93,8 @@ const styles = StyleSheet.create({
     flex: 2,
     alignItems: 'stretch',
     justifyContent: 'space-around'
+  },
+  answerView: {
+    flexDirection: 'row'
   }
 });

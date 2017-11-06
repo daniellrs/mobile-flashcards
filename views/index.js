@@ -32,7 +32,7 @@ const HomeButton = (navigation) => {
   return {
     header: () =>
     <View style={styles.homeView}>
-      <TouchableOpacity onPress={() => navigation.goBack()} style={styles.homeButton}>
+      <TouchableOpacity onPress={() => navigation.navigate('DeckList')} style={styles.homeButton}>
         <Entypo name='home' style={styles.homeGlyph} />
       </TouchableOpacity>
     </View>

@@ -5,10 +5,10 @@ import { white, pink } from '../utils/colors';
 export default class Button extends Component {
 
   render() {
-    const { value, children, onPress } = this.props;
+    const { value, children, onPress, buttonStyle = {} } = this.props;
 
     return (
-      <TouchableOpacity activeOpacity={0.7} onPress={onPress} style={styles.button}>
+      <TouchableOpacity activeOpacity={0.7} onPress={onPress} style={[styles.button, buttonStyle]}>
         {children}
         <Text style={styles.textButton}>{value}</Text>
       </TouchableOpacity>
