@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import { View, ScrollView, Text, Image, StyleSheet, TouchableOpacity } from 'react-native';
 import Deck from '../../components/Deck';
 import { red, white, grey } from '../../utils/colors';
-import { getDecks } from '../../utils/asyncStorage';
+import { getDecks, removeDecks } from '../../utils/asyncStorage';
 
 export default class DeckList extends Component {
   state = {
@@ -33,7 +33,7 @@ export default class DeckList extends Component {
 
     return (
       <ScrollView style={{backgroundColor: grey}}>
-        
+
         <View style={styles.container}>
           {Object.keys(decks).length === 0 && (
             <Text style={styles.noDeck}>No deck added yet</Text>

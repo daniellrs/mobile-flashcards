@@ -5,7 +5,7 @@ import ButtonImage from '../../components/ButtonImage';
 import Card from '../../components/Card';
 import { white, pink, yellow, red, grey } from '../../utils/colors';
 import { getDeck } from '../../utils/asyncStorage';
-import { Feather, MaterialIcons } from '@expo/vector-icons';
+import { Feather, MaterialIcons, MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default class Deck extends Component {
   state = {
@@ -66,6 +66,14 @@ export default class Deck extends Component {
     }, 10);
   }
 
+  navigate = ( screen, title ) => {
+    this.props.navigation.navigate(screen, { title });
+  }
+
+  restartQuiz = () => {
+    this.setState({indexQuestion: 1, wrongAnswers: [], finished: false, percentage: 0 });
+  }
+
   resultText = () => {
     const { percentage } = this.state;
 
@@ -93,7 +101,7 @@ export default class Deck extends Component {
   }
 
   render() {
-    const { deck, questionsLength, indexQuestion, finished, percentage } = this.state;
+    const { deck, questionsLength, indexQuestion, finished, percentage, wrongAnswers } = this.state;
 
     const currentQuestion = this.checkActualQuestion();
 
@@ -109,11 +117,22 @@ export default class Deck extends Component {
                 <Text style={styles.percentage}>{percentage}%</Text>
               </View>
             </View>
+            <View style={styles.buttonsResultView}>
+
+              <ButtonImage value="Restart Quiz" buttonStyle={{flex: 1}} onPress={this.restartQuiz}>
+                <MaterialCommunityIcons name='cards' size={30} color={white} style={{marginRight: 5}} />
+              </ButtonImage>
+
+              <Button value="Back to Deck" buttonStyle={{flex: 1}} onPress={() => this.navigate('IndividualDeck', deck.title)}>
+                <MaterialCommunityIcons name='plus' color={pink} size={30} style={{marginRight: 5}} />
+              </Button>
+
+            </View>
             <ScrollView style={styles.results}>
               {deck && deck.questions.map( (d, index) => (
                 <View key={index} style={styles.resultRow}>
                   <Text style={styles.resultIcon}>
-                    {d.answer ? (
+                    {wrongAnswers.indexOf(index+1) < 0 ? (
                       <Feather size={25} name='check' />
                     ) : (
                       <MaterialIcons size={25} name='close' />
@@ -134,11 +153,11 @@ export default class Deck extends Component {
 
               <Card>
                 <View style={styles.viewCard}>
-                  <Text style={styles.cardInfo}>Question</Text>
+                  <Text style={styles.cardInfo}>Tap to see the answer</Text>
                   <Text style={{color: '#333', fontSize: 16}}>{currentQuestion.question}</Text>
                 </View>
                 <View style={styles.viewCard}>
-                  <Text style={styles.cardInfo}>Answer</Text>
+                  <Text style={styles.cardInfo}>Tap to see the question</Text>
                   <Text style={{color: '#333', fontSize: 16}}>{currentQuestion.answer === 1 ? 'Correct' : 'Incorrect'}</Text>
                 </View>
               </Card>
@@ -249,7 +268,7 @@ const styles = StyleSheet.create({
     fontSize: 30
   },
   results: {
-    flexGrow:60,
+    flexGrow:50,
     backgroundColor: white
   },
   resultRow: {
@@ -266,5 +285,12 @@ const styles = StyleSheet.create({
   },
   resultIcon: {
     color: red
+  },
+  buttonsResultView: {
+    flex: 10,
+    flexDirection: 'row',
+    alignItems: 'stretch',
+    justifyContent: 'space-around',
+    padding: 30
   }
 })
