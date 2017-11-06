@@ -2,19 +2,25 @@ import React, {Component} from 'react';
 import { View, Text, Image, StyleSheet } from 'react-native';
 import Button from '../../components/Button';
 import ButtonImage from '../../components/ButtonImage';
+import Alert from '../../components/Alert';
 import { white, pink, red } from '../../utils/colors';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { getDeck } from '../../utils/asyncStorage';
 
 export default class IndividualDeck extends Component {
   state = {
-    deck: {}
+    deck: {},
+    alert: false
   }
 
   componentDidMount() {
     const title = this.props.navigation.state.params.title;
 
     getDeck( title ).then( deck => this.setState({deck}));
+  }
+
+  componentWillUnmount() {
+    clearTimeout( this.alertTimeout );
   }
 
   navigate = ( screen, title ) => {
@@ -30,18 +36,38 @@ export default class IndividualDeck extends Component {
     return deck.questions.length;
   }
 
+  startDeck = ( deck ) => {
+    if( this.countCards( deck ) > 0 ) {
+      this.navigate('Quiz', deck.title);
+    } else {
+      this.setAlert('The deck needs at least 1 card');
+    }
+  }
+
+  setAlert = ( alert ) => {
+    clearTimeout( this.alertTimeout );
+    this.setState({alert});
+
+    this.alertTimeout = setTimeout(() => this.setState({alert: false}), 4000);
+  }
+
   render() {
-    const { deck } = this.state;
+    const { deck, alert } = this.state;
 
     return (
         <Image style={styles.container} source={require('../../img/fundo.png')}>
+
+          {alert && (
+            <Alert type='red' value={alert} />
+          )}
+
           <Image style={styles.backgroundCard} source={require('../../img/fundoDetalhesCartaoComEf.png')}>
             <Text style={styles.titleCard}>{deck.title}</Text>
             <Text style={{fontSize: 16}}>{this.countCards( deck )} cards</Text>
           </Image>
           <View style={styles.buttonsView}>
 
-            <ButtonImage value="Start Quiz" onPress={() => this.navigate('Quiz', deck.title)}>
+            <ButtonImage value="Start Quiz" onPress={() => this.startDeck( deck )}>
               <MaterialCommunityIcons name='cards' size={30} color={white} style={{marginRight: 5}} />
             </ButtonImage>
 

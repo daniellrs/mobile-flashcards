@@ -33,6 +33,7 @@ export default class DeckList extends Component {
 
     return (
       <ScrollView style={{backgroundColor: grey}}>
+        
         <View style={styles.container}>
           {Object.keys(decks).length === 0 && (
             <Text style={styles.noDeck}>No deck added yet</Text>

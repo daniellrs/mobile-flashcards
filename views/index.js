@@ -27,12 +27,12 @@ const NewButton = (navigation) => {
   )
 }
 
-const HomeButton = (navigation) => {
+const HomeButton = (navigation, screen) => {
 
   return {
     header: () =>
     <View style={styles.homeView}>
-      <TouchableOpacity onPress={() => navigation.navigate('DeckList')} style={styles.homeButton}>
+      <TouchableOpacity onPress={() => screen ? navigation.navigate( screen ) : navigation.goBack()} style={styles.homeButton}>
         <Entypo name='home' style={styles.homeGlyph} />
       </TouchableOpacity>
     </View>
@@ -46,19 +46,20 @@ const Stack = StackNavigator({
       title: 'Decks',
       headerRight: NewButton(navigation),
       ...stackDefaults,
+      headerLeft: null
     })
   },
   IndividualDeck: {
     screen: IndividualDeck,
     navigationOptions: ({navigation}) => ({
-      ...HomeButton(navigation),
+      ...HomeButton(navigation, 'DeckList'),
       ...stackDefaults
     })
   },
   NewDeck: {
     screen: NewDeck,
     navigationOptions: ({navigation}) => ({
-      ...HomeButton(navigation),
+      ...HomeButton(navigation, 'DeckList'),
       ...stackDefaults
     })
   },
@@ -85,11 +86,6 @@ export default class Views extends Component {
       <View style={styles.container}>
         <Bar backgroundColor={red} barStyle="light-content"/>
         <Stack />
-        {/* <DeckList /> */}
-        {/* <IndividualDeck /> */}
-        {/* <Quiz /> */}
-        {/* <NewDeck /> */}
-        {/* <NewQuestion /> */}
       </View>
     );
   }

@@ -3,6 +3,7 @@ import { View, KeyboardAvoidingView, Text, Image, StyleSheet } from 'react-nativ
 import Input from '../../components/Input';
 import Button from '../../components/Button';
 import ButtonImage from '../../components/ButtonImage';
+import Alert from '../../components/Alert';
 import { white } from '../../utils/colors';
 import { addCardToDeck } from '../../utils/asyncStorage';
 
@@ -10,7 +11,8 @@ export default class NewQuestion extends Component {
   state = {
     title: '',
     question: '',
-    answer: 1
+    answer: 1,
+    alert: false
   }
 
   componentDidMount() {
@@ -18,23 +20,43 @@ export default class NewQuestion extends Component {
     this.setState({title});
   }
 
+  componentWillUnmount() {
+    clearTimeout( this.alertTimeout );
+  }
+
   addCard = () => {
     const { title, question, answer } = this.state;
     const { navigation } = this.props;
 
-    if( title.trim().length > 0 ) {
+    this.setState({alert: false});
+
+    if( question.trim().length > 0 ) {
 
       addCardToDeck(title, {question, answer}).then(() => {
         navigation.navigate('IndividualDeck', { title });
       });
+    } else {
+      this.setAlert("Question can't be empty");
     }
   }
 
+  setAlert = ( alert ) => {
+    clearTimeout( this.alertTimeout );
+    this.setState({alert});
+
+    this.alertTimeout = setTimeout(() => this.setState({alert: false}), 4000);
+  }
+
   render() {
-    const { question, answer } = this.state;
+    const { question, answer, alert } = this.state;
 
     return (
       <Image style={styles.container} source={require('../../img/fundo.png')}>
+
+        {alert && (
+          <Alert type='white' value={alert} />
+        )}
+
         <KeyboardAvoidingView style={styles.viewAvoid}>
           <View style={styles.textView}>
             <Text style={styles.text}>New card</Text>

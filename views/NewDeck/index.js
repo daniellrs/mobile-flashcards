@@ -2,33 +2,56 @@ import React, { Component } from 'react';
 import { View, KeyboardAvoidingView, Text, Image, StyleSheet } from 'react-native';
 import Input from '../../components/Input';
 import Button from '../../components/Button';
+import Alert from '../../components/Alert';
 import { white } from '../../utils/colors';
 import { saveDeckTitle, getDeck } from '../../utils/asyncStorage';
 
 export default class NewDeck extends Component {
   state = {
-    title: ''
+    title: '',
+    alert: false
+  }
+
+  componentWillUnmount() {
+    clearTimeout( this.alertTimeout );
   }
 
   async createDeck( title, navigation ) {
+    this.setState({alert: false});
 
     if( title.trim().length > 0 ) {
 
       const exist = await getDeck( title );
-      
+
       if( !exist ) {
         await saveDeckTitle( title );
         navigation.navigate('IndividualDeck', { title });
+      } else {
+        this.setAlert('This deck title already exist');
       }
+    } else {
+      this.setAlert("Title can't be empty");
     }
   }
 
+  setAlert = ( alert ) => {
+    clearTimeout( this.alertTimeout );
+    this.setState({alert});
+
+    this.alertTimeout = setTimeout(() => this.setState({alert: false}), 4000);
+  }
+
   render() {
-    const { title } = this.state;
+    const { title, alert } = this.state;
     const { navigation } = this.props;
 
     return (
       <Image style={styles.container} source={require('../../img/fundo.png')}>
+
+        {alert && (
+          <Alert type='white' value={alert} />
+        )}
+
         <KeyboardAvoidingView style={styles.viewAvoid}>
           <View style={styles.textView}>
             <Text style={styles.text}>What is the title of your new deck?</Text>

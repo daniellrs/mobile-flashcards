@@ -1,10 +1,11 @@
 import React, {Component} from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
+import { View, ScrollView, Text, Image, StyleSheet } from 'react-native';
 import Button from '../../components/Button';
 import ButtonImage from '../../components/ButtonImage';
 import Card from '../../components/Card';
-import { white, pink, yellow } from '../../utils/colors';
+import { white, pink, yellow, red, grey } from '../../utils/colors';
 import { getDeck } from '../../utils/asyncStorage';
+import { Feather, MaterialIcons } from '@expo/vector-icons';
 
 export default class Deck extends Component {
   state = {
@@ -12,7 +13,8 @@ export default class Deck extends Component {
     questionsLength: 0,
     indexQuestion: 1,
     wrongAnswers: [],
-    finished: false
+    finished: false,
+    percentage: 0
   }
 
   componentDidMount() {
@@ -43,19 +45,85 @@ export default class Deck extends Component {
       this.setState({indexQuestion: indexQuestion+1});
     } else {
       this.setState({finished: true});
+      this.percentageAnswers();
     }
 
   }
 
+  percentageAnswers = () => {
+    const { questionsLength, wrongAnswers } = this.state;
+
+    const result = (100 - ((wrongAnswers.length*100) / questionsLength));
+
+    this.interval = setInterval(() => {
+      const { percentage } = this.state;
+
+      if( percentage < result ) {
+        this.setState({percentage: percentage+1})
+      } else {
+        clearInterval( this.interval );
+      }
+    }, 10);
+  }
+
+  resultText = () => {
+    const { percentage } = this.state;
+
+    if( percentage < 15 ) {
+      return 'Maybe you just in a bad day...';
+    }
+
+    if( percentage < 40 ) {
+      return 'Alright, you can do better...';
+    }
+
+    if( percentage < 60 ) {
+      return "It's not too bad";
+    }
+
+    if( percentage < 80 ) {
+      return 'Nice';
+    }
+
+    if( percentage < 100 ) {
+      return 'Good job!'
+    }
+
+    return 'Yeah, awesome!'
+  }
+
   render() {
-    const { questionsLength, indexQuestion, finished, wrongAnswers } = this.state;
+    const { deck, questionsLength, indexQuestion, finished, percentage } = this.state;
 
     const currentQuestion = this.checkActualQuestion();
 
     return (
       <Image style={styles.container} source={require('../../img/fundo.png')}>
         {finished && (
-          <Text>{JSON.stringify(wrongAnswers)}</Text>
+          <View style={{flex: 1}}>
+            <View style={styles.resultTextView}>
+              <Text style={styles.resultText}>{this.resultText()}</Text>
+            </View>
+            <View style={styles.percentageView}>
+              <View style={styles.percentageCircle}>
+                <Text style={styles.percentage}>{percentage}%</Text>
+              </View>
+            </View>
+            <ScrollView style={styles.results}>
+              {deck && deck.questions.map( (d, index) => (
+                <View key={index} style={styles.resultRow}>
+                  <Text style={styles.resultIcon}>
+                    {d.answer ? (
+                      <Feather size={25} name='check' />
+                    ) : (
+                      <MaterialIcons size={25} name='close' />
+                    )}
+                  </Text>
+                  <Text style={styles.resultQuestion}>{d.question}</Text>
+                </View>
+              ))}
+            </ScrollView>
+          </View>
         )}
         {!finished && (
           <View style={styles.View}>
@@ -67,11 +135,11 @@ export default class Deck extends Component {
               <Card>
                 <View style={styles.viewCard}>
                   <Text style={styles.cardInfo}>Question</Text>
-                  <Text style={{fontSize: 17}}>{currentQuestion.question}</Text>
+                  <Text style={{color: '#333', fontSize: 16}}>{currentQuestion.question}</Text>
                 </View>
                 <View style={styles.viewCard}>
                   <Text style={styles.cardInfo}>Answer</Text>
-                  <Text style={{fontSize: 17}}>{currentQuestion.answer === 1 ? 'Correct' : 'Incorrect'}</Text>
+                  <Text style={{color: '#333', fontSize: 16}}>{currentQuestion.answer === 1 ? 'Correct' : 'Incorrect'}</Text>
                 </View>
               </Card>
 
@@ -153,5 +221,50 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center'
+  },
+  resultTextView: {
+    flex:10,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  resultText: {
+    color: white,
+    fontSize: 25
+  },
+  percentageView: {
+    flex:20,
+    justifyContent: 'center',
+    alignItems: 'center'
+  },
+  percentageCircle: {
+    justifyContent: 'center',
+    alignItems: 'center',
+    backgroundColor: white,
+    borderRadius: 50,
+    width: 90,
+    height: 90
+  },
+  percentage: {
+    color: red,
+    fontSize: 30
+  },
+  results: {
+    flexGrow:60,
+    backgroundColor: white
+  },
+  resultRow: {
+    flexDirection: 'row',
+    borderColor: grey,
+    borderBottomWidth: 1,
+    padding: 15
+  },
+  resultQuestion: {
+    fontSize: 13,
+    color: '#333',
+    marginLeft: 10,
+    paddingTop: 3
+  },
+  resultIcon: {
+    color: red
   }
 })
