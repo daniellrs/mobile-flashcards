@@ -16,6 +16,12 @@ export default class Input extends Component {
     this.setState({size: new Animated.Value(size)});
   }
 
+  componentWillUnmount() {
+    this.state.placeTop.removeAllListeners();
+    this.state.textFontSize.removeAllListeners();
+    this.state.marginLeftFont.removeAllListeners();
+  }
+
   onFocus = ( ) => {
     const { placeTop, textFontSize, marginLeftFont, size } = this.state;
 
